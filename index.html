@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Attendance Management System</title>
+
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    /* HEADER */
+
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .header h1 {
+        color: #222;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    /* CARD */
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* FORM */
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        align-items: flex-end;
+    }
+
+    .input-group {
+        flex: 1;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #444;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .input-group input:focus {
+        border-color: #007bff;
+    }
+
+    .input-group input[readonly] {
+        background: #f1f3f5;
+    }
+
+    /* BUTTON */
+
+    button {
+        border: none;
+        color: white;
+        padding: 13px 22px;
+        font-size: 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    button:hover {
+        opacity: 0.85;
+    }
+
+    .primary-btn {
+        background: #007bff;
+    }
+
+    .attendance-btn {
+        background: #28a745;
+    }
+
+    .refresh-btn {
+        background: #6c757d;
+    }
+
+    .pdf-btn {
+        background: #dc3545;
+    }
+
+    .search-btn {
+        background: #6f42c1;
+    }
+
+    /* MESSAGE */
+
+    .message {
+        margin-top: 15px;
+        font-weight: bold;
+        min-height: 20px;
+    }
+
+    /* TABLE */
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        min-width: 750px;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #007bff;
+        color: white;
+    }
+
+    th, td {
+        padding: 13px;
+        border: 1px solid #ddd;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    tr:hover {
+        background: #f1f1f1;
+    }
+
+    /* GENERATED ID BOX */
+
+    .generated-id {
+        margin-top: 15px;
+        padding: 15px;
+        background: #e8f5e9;
+        border-left: 5px solid #28a745;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .generated-id strong {
+        color: #155724;
+    }
+
+    /* RESPONSIVE */
+
+    @media screen and (max-width: 768px) {
+
+        body {
+            padding: 20px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .form-row button {
+            width: 100%;
+        }
+
+        .table-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .action-buttons {
+            width: 100%;
+        }
+
+        .action-buttons button {
+            flex: 1;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+
+        body {
+            padding: 12px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-buttons button {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        table {
+            font-size: 13px;
+        }
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <h1>Student Attendance Management System</h1>
+
+    <p>
+        Student Registration | Daily IN Time | Daily OUT Time
+    </p>
+
+</div>
+
+
+<!-- =========================================
+     STUDENT REGISTRATION
+========================================== -->
+
+<div class="card">
+
+    <h2>Student Registration</h2>
+
+    <form id="studentForm">
+
+        <div class="form-row">
+
+            <div class="input-group">
+
+                <label>Student Name</label>
+
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter Student Name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Department</label>
+
+                <input
+                    type="text"
+                    id="department"
+                    placeholder="Example: IT"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Register Student
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <p
+        id="studentMessage"
+        class="message"
+    ></p>
+
+
+    <div
+        id="generatedIdBox"
+        class="generated-id"
+    >
+
+        <strong>Generated Student ID:</strong>
+
+        <span id="generatedStudentId"></span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     ATTENDANCE FORM
+========================================== -->
+
+<div class="card">
+
+    <h2>Mark Attendance</h2>
+
+    <form id="attendanceForm">
+
+        <div class="form-row">
+
+            <!-- STUDENT ID -->
+
+            <div class="input-group">
+
+                <label>Student ID</label>
+
+                <input
+                    type="text"
+                    id="attendanceStudentId"
+                    placeholder="Example: PUMO2026IT01"
+                    required
+                >
+
+            </div>
+
+
+            <!-- STUDENT NAME AUTO FETCH -->
+
+            <div class="input-group">
+
+                <label>Student Name</label>
+
+                <input
+                    type="text"
+                    id="attendanceStudentName"
+                    placeholder="Auto Fetch Student Name"
+                    readonly
+                >
+
+            </div>
+
+
+            <!-- ATTENDANCE BUTTON -->
+
+            <button
+                type="submit"
+                class="attendance-btn"
+            >
+                Mark IN / OUT
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <p
+        id="attendanceMessage"
+        class="message"
+    ></p>
+
+</div>
+
+
+<!-- =========================================
+     STUDENT ATTENDANCE HISTORY
+========================================== -->
+
+<div class="card">
+
+    <h2>Student Attendance History</h2>
+
+    <div class="form-row">
+
+        <div class="input-group">
+
+            <label>Enter Student ID</label>
+
+            <input
+                type="text"
+                id="historyStudentId"
+                placeholder="Example: PUMO2026IT01"
+            >
+
+        </div>
+
+        <button
+            type="button"
+            class="search-btn"
+            onclick="getStudentHistory()"
+        >
+            Search History
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     ATTENDANCE LIST
+========================================== -->
+
+<div class="card">
+
+    <div class="table-header">
+
+        <h2>All Attendance Records</h2>
+
+
+        <div class="action-buttons">
+
+            <button
+                onclick="getAttendance()"
+                class="refresh-btn"
+            >
+                Refresh
+            </button>
+
+
+            <button
+                onclick="downloadPdf()"
+                class="pdf-btn"
+            >
+                Download PDF
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>IN Time</th>
+                <th>OUT Time</th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody id="attendanceTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+
+    /* =========================================
+       API URLS
+    ========================================== */
+
+    const STUDENT_API =
+        "https://student-attendance-backend-g1tp.onrender.com/api/students";
+
+
+    const ATTENDANCE_API =
+        "https://student-attendance-backend-g1tp.onrender.com/api/attendance";
+
+
+    /* =========================================
+       1. STUDENT REGISTRATION
+       POST /api/students
+    ========================================== */
+
+    document
+        .getElementById("studentForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const studentName =
+                    document
+                        .getElementById("studentName")
+                        .value
+                        .trim();
+
+
+                const department =
+                    document
+                        .getElementById("department")
+                        .value
+                        .trim();
+
+
+                const studentData = {
+
+                    studentName: studentName,
+
+                    department: department
+
+                };
+
+
+                const message =
+                    document
+                        .getElementById("studentMessage");
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            STUDENT_API,
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        studentData
+                                    )
+
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        const errorText =
+                            await response.text();
+
+                        throw new Error(errorText);
+
+                    }
+
+
+                    const result =
+                        await response.json();
+
+
+                    message.innerText =
+                        "Student Registered Successfully";
+
+
+                    message.style.color =
+                        "green";
+
+
+                    document
+                        .getElementById(
+                            "generatedStudentId"
+                        )
+                        .innerText =
+                        result.studentId;
+
+
+                    document
+                        .getElementById(
+                            "generatedIdBox"
+                        )
+                        .style.display =
+                        "block";
+
+
+                    document
+                        .getElementById(
+                            "studentForm"
+                        )
+                        .reset();
+
+
+                } catch(error) {
+
+                    console.error(error);
+
+
+                    message.innerText =
+                        "Student Registration Failed: "
+                        + error.message;
+
+
+                    message.style.color =
+                        "red";
+
+                }
+
+            }
+        );
+
+
+    /* =========================================
+       2. GET STUDENT BY ID
+       GET /api/students/{studentId}
+
+       Auto Fetch Student Name
+    ========================================== */
+
+    document
+        .getElementById(
+            "attendanceStudentId"
+        )
+        .addEventListener(
+            "blur",
+            async function() {
+
+                const studentId =
+                    this.value.trim();
+
+
+                const studentNameInput =
+                    document
+                        .getElementById(
+                            "attendanceStudentName"
+                        );
+
+
+                if (!studentId) {
+
+                    studentNameInput.value = "";
+
+                    return;
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${STUDENT_API}/${studentId}`
+                        );
+
+
+                    if (!response.ok) {
+
+                        studentNameInput.value =
+                            "Student Not Found";
+
+                        return;
+                    }
+
+
+                    const student =
+                        await response.json();
+
+
+                    studentNameInput.value =
+                        student.studentName;
+
+
+                } catch(error) {
+
+                    console.error(error);
+
+                    studentNameInput.value =
+                        "Error Fetching Student";
+
+                }
+
+            }
+        );
+
+
+    /* =========================================
+       3. MARK ATTENDANCE
+       POST /api/attendance/mark
+
+       FIRST TIME = IN
+       SECOND TIME = OUT
+    ========================================== */
+
+    document
+        .getElementById(
+            "attendanceForm"
+        )
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const studentId =
+                    document
+                        .getElementById(
+                            "attendanceStudentId"
+                        )
+                        .value
+                        .trim();
+
+
+                const attendanceData = {
+
+                    studentId: studentId
+
+                };
+
+
+                const message =
+                    document
+                        .getElementById(
+                            "attendanceMessage"
+                        );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${ATTENDANCE_API}/mark`,
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        attendanceData
+                                    )
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.text();
+
+
+                    message.innerText =
+                        result;
+
+
+                    if (response.ok) {
+
+                        message.style.color =
+                            "green";
+
+                    } else {
+
+                        message.style.color =
+                            "red";
+
+                    }
+
+
+                    getAttendance();
+
+
+                    document
+                        .getElementById(
+                            "attendanceForm"
+                        )
+                        .reset();
+
+
+                } catch(error) {
+
+                    console.error(error);
+
+
+                    message.innerText =
+                        "Error Connecting to Spring Boot Server";
+
+
+                    message.style.color =
+                        "red";
+
+                }
+
+            }
+        );
+
+
+    /* =========================================
+       4. GET ALL ATTENDANCE
+       GET /api/attendance
+    ========================================== */
+
+    async function getAttendance() {
+
+        const table =
+            document.getElementById(
+                "attendanceTable"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    ATTENDANCE_API
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load attendance"
+                );
+
+            }
+
+
+            const attendanceList =
+                await response.json();
+
+
+            table.innerHTML = "";
+
+
+            if (attendanceList.length === 0) {
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            No Attendance Records Found
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+            }
+
+
+            attendanceList.forEach(
+                attendance => {
+
+
+                    const student =
+                        attendance.student || {};
+
+
+                    const row = `
+
+                        <tr>
+
+                            <td>
+                                ${attendance.id || "-"}
+                            </td>
+
+
+                            <td>
+                                ${student.studentId || "-"}
+                            </td>
+
+
+                            <td>
+                                ${student.studentName || "-"}
+                            </td>
+
+
+                            <td>
+                                ${student.department || "-"}
+                            </td>
+
+
+                            <td>
+                                ${attendance.attendanceDate || "-"}
+                            </td>
+
+
+                            <td>
+                                ${formatDateTime(
+                                    attendance.inTime
+                                )}
+                            </td>
+
+
+                            <td>
+                                ${formatDateTime(
+                                    attendance.outTime
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+
+                    table.innerHTML += row;
+
+                }
+            );
+
+
+        } catch(error) {
+
+            console.error(error);
+
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        style="color:red"
+                    >
+
+                        Error Loading Attendance Data
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================
+       5. STUDENT ATTENDANCE HISTORY
+
+       GET
+       /api/attendance/student/{studentId}
+    ========================================== */
+
+    async function getStudentHistory() {
+
+        const studentId =
+            document
+                .getElementById(
+                    "historyStudentId"
+                )
+                .value
+                .trim();
+
+
+        if (!studentId) {
+
+            alert(
+                "Please Enter Student ID"
+            );
+
+            return;
+        }
+
+
+        const table =
+            document.getElementById(
+                "attendanceTable"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${ATTENDANCE_API}/student/${studentId}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Student Attendance Not Found"
+                );
+
+            }
+
+
+            const attendanceList =
+                await response.json();
+
+
+            table.innerHTML = "";
+
+
+            if (attendanceList.length === 0) {
+
+                table.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            No Attendance History Found
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+            }
+
+
+            attendanceList.forEach(
+                attendance => {
+
+
+                    const student =
+                        attendance.student || {};
+
+
+                    table.innerHTML += `
+
+                        <tr>
+
+                            <td>
+                                ${attendance.id || "-"}
+                            </td>
+
+                            <td>
+                                ${student.studentId || "-"}
+                            </td>
+
+                            <td>
+                                ${student.studentName || "-"}
+                            </td>
+
+                            <td>
+                                ${student.department || "-"}
+                            </td>
+
+                            <td>
+                                ${attendance.attendanceDate || "-"}
+                            </td>
+
+                            <td>
+                                ${formatDateTime(
+                                    attendance.inTime
+                                )}
+                            </td>
+
+                            <td>
+                                ${formatDateTime(
+                                    attendance.outTime
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            );
+
+
+        } catch(error) {
+
+            console.error(error);
+
+            alert(error.message);
+
+        }
+
+    }
+
+
+    /* =========================================
+       6. DOWNLOAD PDF
+
+       GET
+       /api/attendance/download-pdf
+    ========================================== */
+
+    function downloadPdf() {
+
+        window.location.href =
+            `${ATTENDANCE_API}/download-pdf`;
+
+    }
+
+
+    /* =========================================
+       FORMAT DATE TIME
+    ========================================== */
+
+    function formatDateTime(dateTime) {
+
+        if (!dateTime) {
+            return "-";
+        }
+
+
+        const date =
+            new Date(dateTime);
+
+
+        return date.toLocaleString();
+
+    }
+
+
+    /* =========================================
+       AUTO LOAD ATTENDANCE
+    ========================================== */
+
+    getAttendance();
+
+
+</script>
+
+</body>
+
+</html>
