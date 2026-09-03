@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: #666;
+}
+
+/* Navigation */
+
+.top-nav {
+    background: white;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.top-nav a {
+    text-decoration: none;
+    margin: 10px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Cards */
+
+.card,
+.home-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Home Grid */
+
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.home-card {
+    text-align: center;
+}
+
+.home-card h2 {
+    margin-bottom: 15px;
+}
+
+.home-card p {
+    margin-bottom: 25px;
+    color: #666;
+}
+
+/* Form */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+input[readonly] {
+    background: #eee;
+}
+
+/* Buttons */
+
+button,
+.nav-btn {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    background: #007bff;
+}
+
+.attendance-btn {
+    background: #28a745;
+}
+
+.refresh-btn {
+    background: #6c757d;
+}
+
+.pdf-btn {
+    background: #dc3545;
+}
+
+.search-btn {
+    background: #6f42c1;
+}
+
+.green {
+    background: #28a745;
+}
+
+.purple {
+    background: #6f42c1;
+}
+
+button:hover,
+.nav-btn:hover {
+    opacity: 0.85;
+}
+
+/* Messages */
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Generated ID */
+
+.generated-id {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-left: 5px solid #28a745;
+    display: none;
+}
+
+/* Search */
+
+.search-box {
+    display: flex;
+    gap: 15px;
+}
+
+/* Table */
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+th,
+td {
+    padding: 13px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .table-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+}

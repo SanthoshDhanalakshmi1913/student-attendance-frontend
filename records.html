@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Attendance Records</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+
+        <a href="index.html">🏠 Home</a>
+
+        <a href="register.html">Register</a>
+
+        <a href="attendance.html">Attendance</a>
+
+    </div>
+
+
+    <div class="header">
+
+        <h1>Attendance Records</h1>
+
+        <p>View Student Attendance History</p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="card">
+
+        <h2>Search Student Attendance</h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="historyStudentId"
+                placeholder="Enter Student ID"
+            >
+
+            <button
+                onclick="getStudentHistory()"
+                class="search-btn"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECORDS -->
+
+    <div class="card">
+
+        <div class="table-header">
+
+            <h2>All Attendance Records</h2>
+
+
+            <div class="action-buttons">
+
+                <button
+                    onclick="getAttendance()"
+                    class="refresh-btn"
+                >
+                    Refresh
+                </button>
+
+
+                <button
+                    onclick="downloadPdf()"
+                    class="pdf-btn"
+                >
+                    Download PDF
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>IN Time</th>
+                        <th>OUT Time</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="attendanceTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/config.js"></script>
+
+<script src="js/records.js"></script>
+
+</body>
+
+</html>
